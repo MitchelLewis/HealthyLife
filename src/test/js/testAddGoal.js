@@ -56,7 +56,8 @@ describe('Add Goal', function() {
 			      </div>
 			    </div>
 			  </div>
-			</div>`;
+			</div>
+			<a href="#" id="next-btn" class="btn btn-primary" style="visibility: hidden;">Next</a>`;
 		doc.body.appendChild(testParent);
 	});
 	
@@ -133,6 +134,7 @@ describe('Add Goal', function() {
   	it('should add goals to the table', function() {
 		counter = 1;
 		doc.getElementById('goal-2').remove();
+		expect(doc.getElementById('next-btn').style.visibility).to.equal('hidden');
 		window.HTMLFormElement.prototype.submit = () => {}
 		doc.getElementById('goal-select').value = 'Protein';
 		doc.getElementById('goal-amount').value = '1';
@@ -140,14 +142,18 @@ describe('Add Goal', function() {
 		addGoal(new Event('submit'));
       	expect(doc.getElementById('goal-1').querySelectorAll('td')[0].innerHTML).to.equal('Protein');
       	expect(doc.getElementById('goal-1').querySelectorAll('td')[1].innerHTML).to.equal('1 grams');
+      	expect(doc.getElementById('next-btn').style.visibility).to.equal('');
 	});
 	
   	it('should remove goals from the table', function() {
+		doc.getElementById('next-btn').style.visibility = '';
 		expect(!!doc.getElementById('goal-1')).to.be.true;
+		expect(doc.getElementById('next-btn').style.visibility).to.equal('');
 		expect(counter).to.equal(2);
 		removeGoal(1);
       	expect(counter).to.equal(1);
       	expect(!!doc.getElementById('goal-1')).to.be.false;
+      	expect(doc.getElementById('next-btn').style.visibility).to.equal('hidden');
 	});
 	
 	it('should add the form to the modal dialog', function () {
