@@ -18,11 +18,15 @@ function addGoal(e) {
 		var modal = bootstrap.Modal.getInstance(modalElement);
 		modal.hide();
 	}
+	document.getElementById('next-btn').style.visibility = '';
 }
 
 function removeGoal(id) {
 	document.getElementById(`goal-${id}`).remove();
 	counter -= 1;
+	if(counter == 1) {
+		document.getElementById('next-btn').style.visibility = 'hidden';
+	}
 }
 
 function addFormToDialog() {
