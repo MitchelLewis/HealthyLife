@@ -49,7 +49,7 @@
 	</nav>
 	<header class="masthead bg-primary text-white text-center">
 		<div class="container d-flex align-items-center flex-column">
-			<h1 class="masthead-heading mb-0">REGISTER FOR AN ACCOUNT</h1>
+			<h1 class="masthead-heading mb-0">DASHBOARD</h1>
 			<div class="divider-custom divider-light">
 				<div class="divider-custom-line"></div>
 				<div class="divider-custom-icon">
@@ -62,73 +62,11 @@
 	<section class="page-section" id="feature-1">
 		<div class="container">
 			<div class="text-center">
-				<h2 class="page-section-heading text-secondary d-inline-block mb-0">ENTER YOUR DETAILS</h2>
+				<h2 class="page-section-heading text-secondary d-inline-block mb-0">WELCOME, <%= session.getAttribute("name") %></h2>
+				<h3 class="mt-2">Let's see how you are getting on!</h3>
+				<!--  display each metric here along with progress bar -->
 			</div>
-			<div class="divider-custom	">
-				<div class="divider-custom-line"></div>
-				<div class="divider-custom-icon">
-					<i class="fas fa-star"></i>
-				</div>
-				<div class="divider-custom-line"></div>
-			</div>
-			<div class="row">
-				<div class="col-lg-8 mr-auto ml-auto">
-				<%ArrayList<String> errors = 
-            (ArrayList<String>)request.getAttribute("errors");
-			if(!errors.isEmpty()) {%>
-			<div class="alert alert-danger" role="alert">
-				<ul>
-					<ul>
-						<%
-        		for(String error: errors){%>
-						<li><%=error%></li>
-						<%}%>
-					</ul>
-			</div>
-			<%}%>
-
-			<form method="POST" action="sign-up">
-				<!-- 2 column grid layout with text inputs for the first and last names -->
-				<div class="row mb-4">
-					<div class="col">
-						<div class="form-group">
-							<label class="form-label" for="first-name">First name</label> <input
-								type="text" id="first-name" class="form-control"
-								name="first-name" />
-
-						</div>
-					</div>
-					<div class="col">
-						<div class="form-group">
-							<label class="form-label" for="surname">Last name</label> <input
-								type="text" id="surname" class="form-control" name="surname" />
-
-						</div>
-					</div>
-				</div>
-
-						<!-- Email input -->
-						<div class="form-group mb-4">
-					<label class="form-label" for="email">Email address</label> <input
-						type="email" id="email" class="form-control" name="email" />
-				</div>
-
-				<!-- Password input -->
-				<div class="form-group mb-4">
-					<label class="form-label" for="password">Password</label> <input
-						type="password" id="password" id="password" class="form-control"
-						name="password" />
-
-				</div>
-
-				<!-- Submit button -->
-				<button type="submit" class="btn btn-success btn-block mb-4">Sign
-					up</button>
-
-
-			</form>
-				</div>
-			</div>
+		
 		</div>
 	</section>
 <footer class="footer text-center">

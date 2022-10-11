@@ -1,5 +1,5 @@
 var counter = 1;
-
+console.log('imported');
 function addGoal(e) {
 	e.preventDefault();
 	const modalElement = document.getElementById('addGoalModal');
@@ -9,9 +9,9 @@ function addGoal(e) {
 	const goalType = document.getElementById('goal-select').value;
 	const goalValue = document.getElementById('goal-amount').value;
 	const goalUnits = document.getElementById('units').innerText;
-	tableRow.innerHTML = `<td class="align-middle">${goalType}</td>
-      <td class="align-middle">${goalValue} ${goalUnits}</td>
-      <td><button type="button" class="btn btn-secondary" onclick="removeGoal(${counter})")>Remove</button></td>`;
+	tableRow.innerHTML = `<td class="align-middle text-center">${goalType}</td>
+      <td class="align-middle text-center">${goalValue} ${goalUnits}</td>
+      <td><button type="button" class="btn btn-secondary text-center" onclick="removeGoal(${counter})")>Remove</button></td>`;
     tableBody.appendChild(tableRow);
     counter += 1;
    	if(modalElement) {
@@ -30,10 +30,12 @@ function removeGoal(id) {
 }
 
 function addFormToDialog() {
+	console.log('running');
 	const element = document.createElement('div');
 	element.innerHTML = `			        <form id="goal-entry-form">
+					<div class="container">
 			        <div class="form-group row mb-2">
-			        	<label class="text-dark col-sm-4 col-form-label" for="goal-select">Goal</label>
+			        	<label class="text-dark text-right col-sm-4 col-form-label" for="goal-select">Goal</label>
 			        	<select class="text-dark col-sm-4" aria-label="Goal type" id="goal-select" onchange="onChangeForGoalSelection();" required>
 						  <option selected>Type</option>
 						  <option value="Calories">Calories</option>
@@ -46,9 +48,10 @@ function addFormToDialog() {
 						</select>
 						</div>
 						<div class="form-group row">
-			        	<label class="text-dark col-sm-4 col-form-label" for="amount">Amount</label>
+			        	<label class="text-dark text-right col-sm-4 col-form-label" for="amount">Amount</label>
 			        	<input type="number" id="goal-amount" class="text-dark col-sm-4" required/>
 			        	<p id="units" class="text-dark col-sm-4 text-start col-form-label"></p>
+			        	</div>
 			        	</div>
 			        </form>`;
 	document.getElementById('modal-body').appendChild(element);

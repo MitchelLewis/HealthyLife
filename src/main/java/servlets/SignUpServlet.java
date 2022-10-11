@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import models.UserRecord;
 
@@ -33,11 +34,7 @@ public class SignUpServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.setContentType("text/html;charset=UTF-8");
-        
-      // Creating a RequestDispatcher object to dispatch
-      // the request the request to another resource
 		request.setAttribute("errors", new ArrayList<>());
         RequestDispatcher rd = 
             request.getRequestDispatcher("sign_up.jsp");
@@ -48,17 +45,14 @@ public class SignUpServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.setContentType("text/html;charset=UTF-8");
-        
-      // Creating a RequestDispatcher object to dispatch
-      // the request the request to another resource
-		
         RequestDispatcher rd = 
             request.getRequestDispatcher("sign_up.jsp");
 		Map<String, String[]> formData = request.getParameterMap();
 		if(validateFormData(formData)) {
 			createUserRecord(formData);
+			HttpSession session = request.getSession();
+			session.setAttribute("name", formData.get("first-name")[0]);
 			response.sendRedirect("sign_up_success.html");
 		} else {
 			
