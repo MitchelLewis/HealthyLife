@@ -55,7 +55,6 @@ public class SignUpServlet extends HttpServlet {
 			session.setAttribute("name", formData.get("first-name")[0]);
 			response.sendRedirect("sign_up_success.html");
 		} else {
-			
 			List<String> invalidParameters = getInvalidParameters(formData);
 			request.setAttribute("errors", invalidParameters);
 			rd.forward(request, response);
