@@ -18,6 +18,7 @@ function addGoal(e) {
 		var modal = bootstrap.Modal.getInstance(modalElement);
 		modal.hide();
 	}
+	addGoalToForm(goalType, goalValue);
 	document.getElementById('next-btn').style.visibility = '';
 }
 
@@ -65,6 +66,19 @@ function removeFormFromDialog() {
 
 function submitForm() {
 	document.getElementById('goal-entry-form').submit();
+}
+
+function addGoalToForm(goalName, target) {
+	const inputElementForGoalName = document.createElement('input');
+	const inputElementForGoalTarget = document.createElement('input');
+	inputElementForGoalName.type = 'hidden';
+	inputElementForGoalName.name = goalName;
+	inputElementForGoalName.value = goalName;
+	inputElementForGoalTarget.type = 'hidden';
+	inputElementForGoalTarget.name = goalName + '.target';
+	inputElementForGoalTarget.value = target;
+	document.getElementById('goal-info-form').appendChild(inputElementForGoalName);
+	document.getElementById('goal-info-form').appendChild(inputElementForGoalTarget);
 }
 
 function onChangeForGoalSelection() {
