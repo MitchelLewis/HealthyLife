@@ -50,6 +50,8 @@ local.properties
 # Code Recommenders
 .recommenders/
 
+#IntelliJ
+.idea
 # Annotation Processing
 .apt_generated/
 .apt_generated_test/
@@ -259,3 +261,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,windows,java,node
+/build/

@@ -1,18 +1,20 @@
 /* global expect, onChangeForGoalSelection */
-const jsdom = require("jsdom");
+//Import necessary dependencies - fake DOM, fake runtime etc. and the code to be tested i.e. add-goal.js
+var jsdom = require("jsdom");
 var fs = require('fs');
 var vm = require('vm');
 var expect = require('chai')
     .expect;
 var code = fs.readFileSync('../../main/webapp/add-goal.js');
+//Run the add-goal JS file in the VM
 vm.runInThisContext(code);
 describe('Add Goal', function() {
-	
+	//Create a new DOM and set the necessary global elements
 	const dom = new jsdom.JSDOM(`<!DOCTYPE html><body></body>`);
 	doc = dom.window.document;
 	global.window = dom.window;
 	global.document = dom.window.document;
-	
+	//Create a fresh test container
 	beforeEach(() => {
 		if(doc.getElementById('test-container')) {
 		doc.getElementById('test-container').remove();
@@ -57,7 +59,9 @@ describe('Add Goal', function() {
 			    </div>
 			  </div>
 			</div>
-			<a href="#" id="next-btn" class="btn btn-primary" style="visibility: hidden;">Next</a>`;
+			<button id="add-goal-btn" style="visibility: hidden;">Add goal</button>
+			<form id="goal-info-form"><button id="next-btn" type="submit" class="btn btn-primary" style="visibility: hidden;">Next</button></form>
+			`;
 		doc.body.appendChild(testParent);
 	});
 	
@@ -118,17 +122,29 @@ describe('Add Goal', function() {
       				<td></td>
       			  </tr>
   				  <tr id="goal-2">
-				  	<td class="align-middle">Calories</td>
-      				<td class="align-middle">1 kcals</td>
+				  	<td class="align-middle">Protein</td>
+      				<td class="align-middle">1 grams</td>
       				<td></td>
       			  </tr>
 				  </tbody>`;
+		const formForHiddenInputsElement = doc.getElementById('goal-info-form');
+		formForHiddenInputsElement.innerHTML = `
+			<input type="hidden" name="Calories" id="goal-input-1" value="Calories">
+			<input type="hidden" name="Calories.target" id="goal-input-1.target" value="1">
+			<input type="hidden" name="Protein" id="goal-input-2" value="Protein">
+			<input type="hidden" name="Protein.target" id="goal-input-2.target" value="1">
+			`
 		doc.body.appendChild(element);
+		doc.body.appendChild(formForHiddenInputsElement);
 		expect(!!doc.getElementById('goal-1')).to.be.true;
 		expect(!!doc.getElementById('goal-2')).to.be.true;
+		expect(!!doc.getElementById('goal-input-1')).to.be.true;
+		expect(!!doc.getElementById('goal-input-2')).to.be.true;
 		removeGoal(1);
 		expect(!!doc.getElementById('goal-1')).to.be.false;
 		expect(!!doc.getElementById('goal-2')).to.be.true;
+		expect(!!doc.getElementById('goal-input-1')).to.be.false;
+		expect(!!doc.getElementById('goal-input-2')).to.be.true;
 	});
 	
   	it('should add goals to the table', function() {
@@ -164,4 +180,17 @@ describe('Add Goal', function() {
 		expect(!!doc.getElementById('goal-entry-form')).to.be.true;
 	});
 
+	it('should add a hidden input field to the page every time a goal is added', function () {
+		counter = 1;
+		expect(doc.getElementById('next-btn').style.visibility).to.equal('hidden');
+		window.HTMLFormElement.prototype.submit = () => {}
+		doc.getElementById('goal-select').value = 'Protein';
+		doc.getElementById('goal-amount').value = '1';
+		expect(!!doc.getElementById('goal-input-1')).to.be.false;
+		expect(!!doc.getElementById('goal-input-1.target')).to.be.false;
+		onChangeForGoalSelection();
+		addGoal(new Event('submit'));
+		expect(doc.getElementById('goal-input-1').value).to.equal('Protein');
+		expect(doc.getElementById('goal-input-1.target').value).to.equal('1');
+	});
 });
