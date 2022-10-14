@@ -32,7 +32,7 @@ public class AddGoalsServlet extends HttpServlet {
     public AddGoalsServlet() {
         super();
         this.allGoals = new HashMap<>();
-        this.allGoals.put("Calories", "grams");
+        this.allGoals.put("Calories", "kcals");
         this.allGoals.put("Protein", "grams");
         this.allGoals.put("Salt", "grams");
         this.allGoals.put("Sugar", "grams");
@@ -56,7 +56,7 @@ public class AddGoalsServlet extends HttpServlet {
 				String[] targetAsArray = formData.get(goal + ".target");
 				String goalValue = goalValueAsArray[0];
 				int target = Integer.valueOf(targetAsArray[0]);
-				Goal goalRecord = new Goal(goal, allGoals.get(goal), 10, target);
+				Goal goalRecord = new Goal(goal, allGoals.get(goal), 0, target);
 				enteredGoals.add(goalRecord);
 			} catch(NullPointerException e) {
 				continue;

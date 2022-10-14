@@ -15,6 +15,7 @@
 	crossorigin="anonymous"></script>
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="css/styles.css" rel="stylesheet">
+<script src="validate-registration-form.js"></script>
 <!-- Fonts CSS-->
 <link rel="stylesheet" href="css/heading.css">
 <link rel="stylesheet" href="css/body.css">
@@ -72,22 +73,21 @@
 				<div class="divider-custom-line"></div>
 			</div>
 			<div class="row">
-				<div class="col-lg-8 mr-auto ml-auto">
+				<div class="col-lg-8 mr-auto ml-auto" id="input-col">
 				<%ArrayList<String> errors = 
             (ArrayList<String>)request.getAttribute("errors");
 			if(!errors.isEmpty()) {%>
 			<div class="alert alert-danger" role="alert">
 				<ul>
-					<ul>
-						<%
-        		for(String error: errors){%>
-						<li><%=error%></li>
-						<%}%>
-					</ul>
+					<%
+			for(String error: errors){%>
+					<li><%=error%></li>
+					<%}%>
+				</ul>
 			</div>
 			<%}%>
 
-			<form method="POST" action="sign-up">
+			<form method="POST" action="sign-up" id="sign-up-form">
 				<!-- 2 column grid layout with text inputs for the first and last names -->
 				<div class="row mb-4">
 					<div class="col">
@@ -143,5 +143,8 @@
 			</div>
 		</div>
 	</footer>
+	<script>
+		document.getElementById('sign-up-form').addEventListener('submit', function(e) {validateRegistrationFormData(e)});
+	</script>
 </body>
 </html>
