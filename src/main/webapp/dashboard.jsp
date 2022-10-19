@@ -14,6 +14,7 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
 	crossorigin="anonymous"></script>
+	
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="css/styles.css" rel="stylesheet">
 <!-- Fonts CSS-->
@@ -36,11 +37,11 @@
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item mx-0 mx-lg-1"><a
-						class="nav-link py-3 px-0 px-lg-3 rounded" href="/healthy-life">HOME</a></li>
+						class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/healthy-life">HOME</a></li>
 						<li class="nav-item mx-0 mx-lg-1"><a
-						class="nav-link py-3 px-0 px-lg-3 rounded" href="dashboard">DASHBOARD</a></li>
+						class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="dashboard">DASHBOARD</a></li>
 					<li class="nav-item mx-0 mx-lg-1"><a
-						class="nav-link py-3 px-0 px-lg-3 rounded" href="sign-out">SIGN
+						class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="sign-out">SIGN
 							OUT</a></li>
 				</ul>
 			</div>
@@ -73,7 +74,7 @@
 				for (Goal goal : goals) {
 				%>
 				
-					<div class="bg-secondary text-white rounded p-3 col-lg-3 mb-3 mt-3 mr-3 ml-3">
+					<div class="bg-secondary text-white rounded p-3 col-lg-4 mb-3 mt-3 mr-3 ml-3">
 						<h4 class="text-center">
 							Goal:
 							<%=goal.getGoalName()%> per day</h4>
@@ -88,19 +89,92 @@
 						<p class="large-text">
 							Target:
 							<%=goal.getTarget()%>
-							<%=goal.getGoalUnit()%>
+							<%=goal.getGoalUnit()%></p>
+						<div class="row container">
 						<button class="btn btn-primary mt-2 mb-4" aria-label="Update progress for <%= goal.getGoalName() %>">
 							Update progress
 						</button>
+						</div>
+						<div class="row container">
 						<button class="btn btn-primary" aria-label="Update goals for <%= goal.getGoalName() %>">
 							Update goal
 						</button>
+						</div>
 					</div>
 				
 				<%
 				}
 				%>
 				</div>
+				</div>
+			</div>
+	</section>
+	<section class="page-section bg-primary text-white mb-0" id="feature-2">
+		<div class="container">
+			<div class="text-center">
+				<h2 class="page-section-heading d-inline-block mb-0">
+					ENTER YOUR DAILY PROGRESS</h2>
+			</div>
+				<div class="container">
+					<div class="row mt-4 mb-4 d-flex justify-content-center">
+						<a class="btn btn-secondary large-text " href="">
+							Update progress
+						</a>
+					</div>
+				</div>
+			</div>
+	</section>
+	<section class="page-section" id="feature-3">
+		<div class="container">
+			<div class="text-center">
+				<h2 class="page-section-heading text-secondary d-inline-block mb-0">
+					CURRENT GOALS</h2>
+			</div>
+				<div class="container">
+					<div class="row mt-4 mb-4 d-flex justify-content-center">
+				<%for (Goal goal : goals) {
+				%>
+					<div class="text-secondary p-3 mb-3 mt-3 mr-3 ml-3">
+						<h4 class="text-center">
+							Goal: <%=goal.getGoalName()%> per day</h4>
+						<p class="large-text mt-2">
+							Target:
+							<%=goal.getTarget()%>
+							<%=goal.getGoalUnit()%>
+						</p>
+					</div>
+				
+				<%
+				}
+				%>
+					</div>
+					<div class="row justify-content-center">
+						<a class="btn btn-primary large-text masthead-subheading" href="">
+							Update goals
+						</a>
+					</div> 
+				</div>
+				
+			</div>
+	</section>
+		<section class="page-section bg-primary text-white mb-0" id="feature-2">
+		<div class="container">
+			<div class="text-center">
+				<h2 class="page-section-heading d-inline-block mb-0">
+					ACHIEVEMENTS UNLOCKED</h2>
+			</div>
+				<div class="container">
+					<div class="row d-flex justify-content-center">
+						<%
+						ArrayList<Object> achievements = (ArrayList<Object>) session.getAttribute("achievements");
+						if(achievements == null) { %>
+							<h3 class="portfolio">You currently haven't earned any achievements</h3>
+						<% } %>
+					</div>
+										<div class="row d-flex justify-content-center">
+					
+					<a href="" class="btn btn-secondary large-text">View this month's achievements</a>
+					</div>
 				</div>
 			</div>
 	</section>
@@ -116,5 +190,13 @@
 			</div>
 		</div>
 	</footer>
+		<!-- Bootstrap core JS-->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+	<!-- Third party plugin JS-->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 </body>
 </html>
