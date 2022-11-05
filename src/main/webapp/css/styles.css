@@ -2257,3 +2257,4 @@ form .row:first-child .floating-label-form-group { border-top: 1px solid #e9ecef
 .icon-contact { display: flex; height: 5rem; width: 5rem; align-items: center; justify-content: center; font-size: 2rem; background-color: #1abc9c; color: #fff; border-radius: 100% }
 .navbar-brand img { max-width: 13.5rem }
 .btn-social { margin-bottom: .5rem }
+.hidden { display: none }
