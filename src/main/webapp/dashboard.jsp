@@ -37,7 +37,7 @@
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item mx-0 mx-lg-1"><a
-						class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/healthy-life">HOME</a></li>
+						class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="home">HOME</a></li>
 						<li class="nav-item mx-0 mx-lg-1"><a
 						class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="dashboard">DASHBOARD</a></li>
 					<li class="nav-item mx-0 mx-lg-1"><a
@@ -91,14 +91,14 @@
 							<%=goal.getTarget()%>
 							<%=goal.getGoalUnit()%></p>
 						<div class="row container">
-						<button class="btn btn-primary mt-2 mb-4" aria-label="Update progress for <%= goal.getGoalName() %>">
+						<a href="update-progress" class="btn btn-primary mt-2 mb-4" aria-label="Update progress for <%= goal.getGoalName() %>">
 							Update progress
-						</button>
+						</a>
 						</div>
 						<div class="row container">
-						<button class="btn btn-primary" aria-label="Update goals for <%= goal.getGoalName() %>">
+						<a class="btn btn-primary" aria-label="Update goals for <%= goal.getGoalName() %>"  href="update-goals">
 							Update goal
-						</button>
+						</a>
 						</div>
 					</div>
 				
@@ -117,7 +117,7 @@
 			</div>
 				<div class="container">
 					<div class="row mt-4 mb-4 d-flex justify-content-center">
-						<a class="btn btn-secondary large-text " href="">
+						<a class="btn btn-secondary large-text " href="update-progress">
 							Update progress
 						</a>
 					</div>
@@ -149,7 +149,7 @@
 				%>
 					</div>
 					<div class="row justify-content-center">
-						<a class="btn btn-primary large-text masthead-subheading" href="">
+						<a class="btn btn-primary large-text masthead-subheading" href="update-goals">
 							Update goals
 						</a>
 					</div> 
