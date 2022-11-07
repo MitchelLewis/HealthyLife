@@ -13,20 +13,9 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
 	crossorigin="anonymous"></script>
-<!-- JavaScript Bundle with Popper -->
-<!-- Bootstrap core JS-->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<!-- Third party plugin JS-->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
-	crossorigin="anonymous"></script>
+
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="css/styles.css" rel="stylesheet">
-<script src="update-goal.js"></script>
 <!-- Fonts CSS-->
 <link rel="stylesheet" href="css/heading.css">
 <link rel="stylesheet" href="css/body.css">
@@ -39,7 +28,7 @@
 				LIFE</a>
 			<button
 				class="navbar-toggler navbar-toggler-right font-weight-bold bg-primary text-white rounded"
-				type="button" data-toggle="collapse" data-target="#navbarResponsive"
+				type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
 				aria-controls="navbarResponsive" aria-expanded="false"
 				aria-label="Toggle navigation">
 				Menu <i class="fas fa-bars"></i>
@@ -47,12 +36,14 @@
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item mx-0 mx-lg-1"><a
-						class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="home">HOME</a></li>
-						<li class="nav-item mx-0 mx-lg-1"><a
-						class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="dashboard">DASHBOARD</a></li>
+						class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"
+						href="home">HOME</a></li>
 					<li class="nav-item mx-0 mx-lg-1"><a
-						class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="sign-out">SIGN
-							OUT</a></li>
+						class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"
+						href="dashboard">DASHBOARD</a></li>
+					<li class="nav-item mx-0 mx-lg-1"><a
+						class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"
+						href="sign-out">SIGN OUT</a></li>
 				</ul>
 			</div>
 		</div>
@@ -86,14 +77,16 @@
 						for (Goal goal : goals) {
 						%>
 						<tr>
-							<td class="align-middle text-center" id="<%= goal.getGoalName()%>"><%=goal.getGoalName()%></td>
-							<td class="align-middle text-center" id="<%= goal.getGoalName()%>-target"><%=goal.getTarget()%>
+							<td class="align-middle text-center"
+								id="<%=goal.getGoalName()%>"><%=goal.getGoalName()%></td>
+							<td class="align-middle text-center"
+								id="<%=goal.getGoalName()%>-target"><%=goal.getTarget()%>
 								<%=goal.getGoalUnit()%></td>
 							<td class="align-middle text-center"><button
 									id="add-goal-btn" type="button"
 									class="btn btn-secondary text-white rounded mr-auto ml-auto"
 									data-bs-toggle="modal" data-bs-target="#addGoalModal"
-									onclick="addFormToDialog('<%= goal.getGoalName() %>', '<%= goal.getGoalUnit() %>')"
+									onclick="addFormToDialog('<%=goal.getGoalName()%>', '<%=goal.getGoalUnit()%>')"
 									aria-label="Update goal for <%=goal.getGoalName()%>">Update
 									goal</button></td>
 						</tr>
@@ -127,9 +120,8 @@
 			</div>
 			<form id="goal-info-form" method="POST" action="update-goals">
 				<div class="d-flex align-items-center flex-column">
-				<input type="submit"
-					class="btn btn-primary mt-2 mb-4 align-middle"
-					value="Save changes" />
+					<input type="submit" class="btn btn-primary mt-2 mb-4 align-middle"
+						value="Save changes" />
 				</div>
 			</form>
 		</div>
@@ -147,12 +139,24 @@
 			<div class="row mt-3">
 				<div class="col-lg-12 mb-5 mb-lg-0">
 					<h4 class="mb-2">CREDITS</h4>
-					<p class="mb-0 mr-auto ml-auto">
-						Thanks to David Miller for the Bootstrap Template (Freelancer)
-					</p>
+					<p class="mb-0 mr-auto ml-auto">Thanks to David Miller for the
+						Bootstrap Template (Freelancer)</p>
 				</div>
 			</div>
 		</div>
 	</footer>
+	<!-- JavaScript Bundle with Popper -->
+	<!-- Bootstrap core JS-->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<!-- Third party plugin JS-->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+		crossorigin="anonymous"></script>
+	<script src="update-goal.js"></script>
+
 </body>
 </html>
