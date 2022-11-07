@@ -169,6 +169,14 @@
 					</p>
 				</div>
 			</div>
+			<div class="row mt-3">
+				<div class="col-lg-12 mb-5 mb-lg-0">
+					<h4 class="mb-2">CREDITS</h4>
+					<p class="mb-0 mr-auto ml-auto">
+						Thanks to David Miller for the Bootstrap Template (Freelancer)
+					</p>
+				</div>
+			</div>
 		</div>
 	</footer>
 	<!-- Bootstrap core JS-->
