@@ -62,7 +62,8 @@ public class SignUpServlet extends HttpServlet {
 				createUserRecord(formData, request);
 				HttpSession session = request.getSession();
 				session.setAttribute("name", formData.get("first-name")[0]);
-				response.sendRedirect("sign_up_success.html");
+		        rd = request.getRequestDispatcher("sign_up_success.jsp");
+		        rd.forward(request, response);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {
