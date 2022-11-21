@@ -1,6 +1,13 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import database.DatabaseConnection;
 import models.UserRecord;
 
 /**
@@ -50,10 +58,21 @@ public class SignUpServlet extends HttpServlet {
             request.getRequestDispatcher("sign_up.jsp");
 		Map<String, String[]> formData = request.getParameterMap();
 		if(validateFormData(formData)) {
-			createUserRecord(formData);
-			HttpSession session = request.getSession();
-			session.setAttribute("name", formData.get("first-name")[0]);
-			response.sendRedirect("sign_up_success.html");
+			try {
+				createUserRecord(formData, request);
+				HttpSession session = request.getSession();
+				session.setAttribute("name", formData.get("first-name")[0]);
+				response.sendRedirect("sign_up_success.html");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			
 		} else {
 			List<String> invalidParameters = getInvalidParameters(formData);
 			request.setAttribute("errors", invalidParameters);
@@ -98,10 +117,24 @@ public class SignUpServlet extends HttpServlet {
 		return errors;
 	}
 	
-	private boolean createUserRecord(Map<String, String[]> formData) {
+	private boolean createUserRecord(Map<String, String[]> formData, HttpServletRequest request) throws SQLException, ClassNotFoundException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		UserRecord record = UserRecord.createRecord(formData);
-		//TODO: store record in data store
+		Connection database = DatabaseConnection.getDatabase();
+		PreparedStatement statement = database.prepareStatement("insert into users(firstName, lastName, email, passwordHash) values (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+		statement.setString(1, record.firstName());
+		statement.setString(2, record.surname());
+		statement.setString(3, record.email());
+		String hashedPassword = DatabaseConnection.hashPassword(record.password());
+		statement.setString(4, hashedPassword);
+		statement.executeUpdate();
+		ResultSet generatedKeys = statement.getGeneratedKeys();
+		if(generatedKeys.next()) {
+			request.getSession().setAttribute("user_id", generatedKeys.getInt(1));
+		}
+		statement.close();
+		database.close();
 		return true;
 	}
+	
 
 }

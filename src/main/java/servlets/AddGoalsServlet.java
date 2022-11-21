@@ -1,6 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import database.DatabaseConnection;
 import models.Goal;
 import models.UserRecord;
 
@@ -49,6 +53,12 @@ public class AddGoalsServlet extends HttpServlet {
 		session.removeAttribute("goals");
 		response.setContentType("text/html;charset=UTF-8");
 		Map<String, String[]> formData = request.getParameterMap();
+		Connection database;
+		try {
+			database = DatabaseConnection.getDatabase();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ServletException("Failed to open database connection - error message: " + e.getMessage());
+		}		
 		List<Goal> enteredGoals = new ArrayList<>();
 		for(String goal: allGoals.keySet()) {
 			try {
@@ -57,10 +67,26 @@ public class AddGoalsServlet extends HttpServlet {
 				String goalValue = goalValueAsArray[0];
 				int target = Integer.valueOf(targetAsArray[0]);
 				Goal goalRecord = new Goal(goal, allGoals.get(goal), 0, target);
+				PreparedStatement statement = database.prepareStatement("insert into user_goals(goalName, goalUnit, currentProgress, target, userId) values (?, ?, ?, ?, ?)");
+				statement.setString(1, goalRecord.getGoalName());
+				statement.setString(2, goalRecord.getGoalUnit());
+				statement.setInt(3, goalRecord.getCurrentProgress());
+				statement.setInt(4, goalRecord.getTarget());
+				statement.setInt(5, ((int) session.getAttribute("user_id")));
+				statement.execute();
+				statement.close();
 				enteredGoals.add(goalRecord);
 			} catch(NullPointerException e) {
 				continue;
+			} catch(SQLException e) {
+				throw new ServletException("Failed to insert data into the database - error message: " + e.getMessage());
 			}
+		}
+		try {
+			database.close();
+		} catch(SQLException e) {
+			throw new ServletException("Failed to insert data into the database - error message: " + e.getMessage());
+
 		}
 		session.setAttribute("goals", enteredGoals);
 		response.sendRedirect("dashboard");

@@ -4,7 +4,7 @@ var fs = require('fs');
 var vm = require('vm');
 var expect = require('chai')
     .expect;
-var code = fs.readFileSync('../../main/webapp/validate-registration-form.js');
+var code = fs.readFileSync('../../validate-registration-form.js');
 //Run the add-goal JS file in the VM
 vm.runInThisContext(code);
 describe('Validate Registration', function() {

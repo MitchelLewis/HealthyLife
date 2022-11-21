@@ -1,6 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import database.DatabaseConnection;
 import models.Goal;
 
 /**
@@ -47,6 +51,12 @@ public class UpdateGoalsServlet extends HttpServlet {
 		ArrayList<Goal> goals = (ArrayList<Goal>) session.getAttribute("goals");
 		response.setContentType("text/html;charset=UTF-8");
 		Map<String, String[]> formData = request.getParameterMap();
+		Connection database;
+		try {
+			database = DatabaseConnection.getDatabase();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ServletException("Failed to open database connection - error message: " + e.getMessage());
+		}		
 		List<Goal> enteredGoals = new ArrayList<>();
 		for(Goal goal: goals) {
 			try {
@@ -55,10 +65,23 @@ public class UpdateGoalsServlet extends HttpServlet {
 				enteredGoals.remove(goal);
 				goal.setTarget(Integer.valueOf(goalValue));
 				enteredGoals.add(goal);
+				PreparedStatement statement = database.prepareStatement("update user_goals set target = ? WHERE userId = ? AND goalName = ?");
+				statement.setInt(1, goal.getTarget());
+				statement.setInt(2, (Integer.valueOf((String) session.getAttribute("user_id"))));
+				statement.setString(3, goal.getGoalName());
+				statement.execute();
+				statement.close();
 			} catch(NullPointerException e) {
 				enteredGoals.add(goal);
 				continue;
+			} catch(SQLException e) {
+				throw new ServletException("Failed to insert data into the database - error message: " + e.getMessage());
 			}
+		}
+		try {
+			database.close();
+		} catch(SQLException e) {
+			throw new ServletException("Failed to insert data into the database - error message: " + e.getMessage());
 		}
 		session.setAttribute("goals", enteredGoals);
 		response.sendRedirect("dashboard");

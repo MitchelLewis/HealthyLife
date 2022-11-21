@@ -5,7 +5,7 @@ var fs = require('fs');
 var vm = require('vm');
 var expect = require('chai')
     .expect;
-var code = fs.readFileSync('../../main/webapp/add-goal.js');
+var code = fs.readFileSync('../../add-goal.js');
 //Run the add-goal JS file in the VM
 vm.runInThisContext(code);
 describe('Add Goal', function() {
