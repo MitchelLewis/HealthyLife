@@ -1,25 +1,18 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="models.Goal"%>
-
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
-<html lang="en">
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:directive.page language="java"
+       contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" />
+<jsp:element name="html">
+<jsp:body>
 <head>
-	<jsp:include page="partials/header.jsp"/>
+	<jsp:include page="partials/header.jspx"/>
 </head>
 <body id="page-top">
 	<jsp:include page="partials/navbar.jsp"/>
 	<header class="masthead bg-primary text-white text-center">
 		<div class="container d-flex align-items-center flex-column">
 			<h1 class="masthead-heading mb-0">DASHBOARD</h1>
-			<div class="divider-custom divider-light">
-				<div class="divider-custom-line"></div>
-				<div class="divider-custom-icon">
-					<i class="fas fa-star"></i>
-				</div>
-				<div class="divider-custom-line"></div>
-			</div>
+			<jsp:include page="partials/divider.jspx"/>
 		</div>
 	</header>
 	<section class="page-section" id="feature-1">
@@ -27,50 +20,43 @@
 			<div class="text-center">
 				<h2 class="page-section-heading text-secondary d-inline-block mb-0">
 					WELCOME,
-					<%=session.getAttribute("name")%></h2>
+					<c:out value="${sessionScope.name}"/></h2>
 				<h3 class="mt-2">Let's see how you are getting on!</h3>
 			</div>
-				<div class="container">
+			<div class="container">
 				<div class="row mt-4 mb-4 d-flex justify-content-center">
-				<%
-				ArrayList<Goal> goals = (ArrayList<Goal>) session.getAttribute("goals");
-				for (Goal goal : goals) {
-				%>
-				
+				<c:forEach var="goal" items="${sessionScope.goals}">
 					<div class="bg-secondary text-white rounded p-3 col-lg-4 mb-3 mt-3 mr-3 ml-3">
 						<h4 class="text-center">
-							Goal:
-							<%=goal.getGoalName()%> per day</h4>
+							Goal: <c:out value="${goal.goalName}"/>
+						</h4>
 						<div class="progress">
-							<div class="progress-bar" role="progressbar" style="width: <%=((double) goal.getCurrentProgress() / goal.getTarget()) * 100 %>%" aria-valuenow="<%=goal.getCurrentProgress()%>"
-								aria-valuemin="0" aria-valuemax="<%=goal.getTarget()%>"></div>
+							<div class="progress-bar" role="progressbar" style="width: ${(goal.currentProgress / goal.target) * 100}%" aria-valuenow="${goal.currentProgress}"
+								aria-valuemin="0" aria-valuemax="${goal.target}"> <!-- some content -->
+							</div>
 						</div>
 						<p class="large-text mt-2">
-							Progress:
-							<%=goal.getCurrentProgress()%>
-							<%=goal.getGoalUnit()%></p>
+							Progress: <c:out value="${goal.currentProgress} ${goal.goalUnit}"/>
+						</p>
 						<p class="large-text">
-							Target:
-							<%=goal.getTarget()%>
-							<%=goal.getGoalUnit()%></p>
+							Target: <c:out value="${goal.target} ${goal.goalUnit}"/>
+						</p>
 						<div class="row container">
-						<a href="update-progress" class="btn btn-primary mt-2 mb-4" aria-label="Update progress for <%= goal.getGoalName() %>">
+						<a href="update-progress" class="btn btn-primary mt-2 mb-4" aria-label="Update progress for ${goal.goalName}">
 							Update progress
 						</a>
 						</div>
 						<div class="row container">
-						<a class="btn btn-primary" aria-label="Update goals for <%= goal.getGoalName() %>"  href="update-goals">
+						<a class="btn btn-primary" aria-label="Update goals for ${goal.goalName}"  href="update-goals">
 							Update goal
 						</a>
 						</div>
-					</div>
+					</div>	
+				</c:forEach>
 				
-				<%
-				}
-				%>
 				</div>
 				</div>
-			</div>
+				</div>
 	</section>
 	<section class="page-section bg-primary text-white mb-0" id="feature-2">
 		<div class="container">
@@ -95,21 +81,16 @@
 			</div>
 				<div class="container">
 					<div class="row mt-4 mb-4 d-flex justify-content-center">
-				<%for (Goal goal : goals) {
-				%>
-					<div class="text-secondary p-3 mb-3 mt-3 mr-3 ml-3">
-						<h4 class="text-center">
-							Goal: <%=goal.getGoalName()%> per day</h4>
-						<p class="large-text mt-2">
-							Target:
-							<%=goal.getTarget()%>
-							<%=goal.getGoalUnit()%>
-						</p>
-					</div>
-				
-				<%
-				}
-				%>
+						<c:forEach var="goal" items="${sessionScope.goals}">
+							<div class="text-secondary p-3 mb-3 mt-3 mr-3 ml-3">
+								<h4 class="text-center">
+									Goal: <c:out value="${goal.goalName}"/> per day
+								</h4>
+								<p class="large-text mt-2">
+									Target: <c:out value="${goal.target} ${goal.goalUnit}"/>
+								</p>
+							</div>
+						</c:forEach>
 					</div>
 					<div class="row justify-content-center">
 						<a class="btn btn-primary large-text masthead-subheading" href="update-goals">
@@ -128,19 +109,18 @@
 			</div>
 				<div class="container">
 					<div class="row d-flex justify-content-center">
-						<%
-						ArrayList<Object> achievements = (ArrayList<Object>) session.getAttribute("achievements");
-						if(achievements == null) { %>
-							<h3 class="portfolio">You currently haven't earned any achievements</h3>
-						<% } %>
+						<c:if test="${empty sessionScope.achievements}">
+							<h3 class="portfolio text-center">You currently haven't earned any achievements</h3>
+						</c:if>
 					</div>
-										<div class="row d-flex justify-content-center">
-					
-					<a href="" class="btn btn-secondary large-text">View this month's achievements</a>
+					<div class="row d-flex justify-content-center">
+						<a href="" class="btn btn-secondary large-text">View this month's achievements</a>
 					</div>
 				</div>
 			</div>
 	</section>
-	<jsp:include page="partials/footer.jsp"/>
+	<jsp:include page="partials/footer.jspx"/>
 </body>
-</html>
+</jsp:body>
+</jsp:element>
+</jsp:root>

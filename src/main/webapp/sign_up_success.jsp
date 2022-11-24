@@ -3,20 +3,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<jsp:include page="partials/header.jsp"/>
+	<jsp:include page="partials/header.jspx"/>
 </head>
 <body id="page-top">
 	<jsp:include page="partials/navbar.jsp"/>
 	<header class="masthead bg-primary text-white text-center">
 		<div class="container d-flex align-items-center flex-column">
 			<h1 class="masthead-heading mb-0">ENTER YOUR DAILY GOALS</h1>
-			<div class="divider-custom divider-light">
-				<div class="divider-custom-line"></div>
-				<div class="divider-custom-icon">
-					<i class="fas fa-star"></i>
-				</div>
-				<div class="divider-custom-line"></div>
-			</div>
+			<jsp:include page="partials/divider.jspx"/>
 			<div class="col-lg-8 mr-auto mt-2 mb-3 ml-auto text-center">
 				<button id="add-goal-btn" type="button"
 					class="btn btn-secondary text-white rounded large-text mr-auto ml-auto"
@@ -73,26 +67,9 @@
 			</div>
 		</div>
 	</section>
-	<footer class="footer text-center">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 mb-5 mb-lg-0">
-					<h4 class="mb-2">COOKIES</h4>
-					<p class="mb-0 mr-auto ml-auto">
-						<a href="cookies">View our cookie policy</a>
-					</p>
-				</div>
-			</div>
-			<div class="row mt-3">
-				<div class="col-lg-12 mb-5 mb-lg-0">
-					<h4 class="mb-2">CREDITS</h4>
-					<p class="mb-0 mr-auto ml-auto">
-						Thanks to David Miller for the Bootstrap Template (Freelancer)
-					</p>
-				</div>
-			</div>
-		</div>
-	</footer>
+	<script src="add-goal.js"><!-- some thing --></script>
+	<jsp:include page="partials/footer.jspx"/>
+	
 
 
 

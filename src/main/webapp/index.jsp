@@ -3,20 +3,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<jsp:include page="partials/header.jsp"/>
+<jsp:include page="partials/header.jspx"/>
 </head>
 <body id="page-top">
 	<jsp:include page="partials/navbar.jsp"/>
 	<header class="masthead bg-primary text-white text-center">
 		<div class="container d-flex align-items-center flex-column">
 			<h1 class="masthead-heading mb-0">WELCOME TO HEALTHY LIFE</h1>
-			<div class="divider-custom divider-light">
-				<div class="divider-custom-line"></div>
-				<div class="divider-custom-icon">
-					<i class="fas fa-star"></i>
-				</div>
-				<div class="divider-custom-line"></div>
-			</div>
+			<jsp:include page="partials/divider.jspx"/>
 			<p class="pre-wrap masthead-subheading font-weight-light mb-0">A modern-day service to track, manage and make changes to your daily life!</p>
 			<div class="col-lg-8 mr-auto mt-4 ml-auto text-center">
 				<a
@@ -31,13 +25,9 @@
 				<h2 class="page-section-heading text-secondary d-inline-block mb-0">NUTRITIONAL
 					TRACKING</h2>
 			</div>
-			<div class="divider-custom	">
-				<div class="divider-custom-line"></div>
-				<div class="divider-custom-icon">
-					<i class="fas fa-star"></i>
-				</div>
-				<div class="divider-custom-line"></div>
-			</div>
+			<jsp:include page="partials/divider.jspx">
+				<jsp:param name="isDarkDivider" value="true"/>
+			</jsp:include>
 			<div class="row">
 				<div class="col-lg-8 mr-auto ml-auto">
 					<p class="pre-wrap lead">Track all your nutrients such as calories, protein and sugar intake all in one place using Healthy Life. You can enter specific goals for each of these nutrients and check on your progress!</p>
@@ -51,13 +41,7 @@
 				<h2 class="page-section-heading d-inline-block mb-0">SLEEP
 					TRACKING</h2>
 			</div>
-			<div class="divider-custom	">
-				<div class="divider-custom-line"></div>
-				<div class="divider-custom-icon">
-					<i class="fas fa-star"></i>
-				</div>
-				<div class="divider-custom-line"></div>
-			</div>
+			<jsp:include page="partials/divider.jspx"/>
 			<div class="row">
 				<div class="col-lg-8 mr-auto ml-auto">
 					<p class="pre-wrap lead">Track your sleep by entering how many hours you sleep in a night. You can enter specific goals for	tracking sleep and the Healthy Life service will recommend articles on how to better manage your sleep!</p>
@@ -71,13 +55,9 @@
 				<h2 class="page-section-heading text-secondary d-inline-block mb-0">PLUS,
 					MANY MORE...</h2>
 			</div>
-			<div class="divider-custom	">
-				<div class="divider-custom-line"></div>
-				<div class="divider-custom-icon">
-					<i class="fas fa-star"></i>
-				</div>
-				<div class="divider-custom-line"></div>
-			</div>
+			<jsp:include page="partials/divider.jspx">
+				<jsp:param name="isDarkDivider" value="true"/>
+			</jsp:include>
 			<div class="row">
 				<div class="col-lg-8 mr-auto ml-auto">
 					<p class="pre-wrap lead">Sign up to the Healthy Life service to create your profile, enter your goals and make progress toward them now!</p>
@@ -92,13 +72,7 @@
 				<h2 class="page-section-heading d-inline-block text-white">ABOUT</h2>
 			</div>
 			<!-- Icon Divider-->
-			<div class="divider-custom divider-light">
-				<div class="divider-custom-line"></div>
-				<div class="divider-custom-icon">
-					<i class="fas fa-star"></i>
-				</div>
-				<div class="divider-custom-line"></div>
-			</div>
+			<jsp:include page="partials/divider.jspx"/>
 			<!-- About Section Content-->
 			<div class="row">
 				<div class="col-lg-4 ml-auto">
@@ -110,6 +84,6 @@
 			</div>
 		</div>
 	</section>
-	<jsp:include page="partials/footer.jsp"/>
+	<jsp:include page="partials/footer.jspx"/>
 </body>
 </html>

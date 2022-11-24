@@ -28,7 +28,7 @@ public class CookieServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher rd = 
-                request.getRequestDispatcher("index.jsp");
+                request.getRequestDispatcher("cookies.jspx");
         rd.forward(request, response);
 	}
 

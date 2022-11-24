@@ -1,3 +1,4 @@
+console.log('imported');
 function validateRegistrationFormData(e) {
     var previousErrorDialog = document.getElementById('error-dialog');
     if(previousErrorDialog) previousErrorDialog.remove();

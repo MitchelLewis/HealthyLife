@@ -28,8 +28,8 @@ import models.UserRecord;
  */
 @WebServlet("/sign-up")
 public class SignUpServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
+    private static final long serialVersionUID = 1L;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -38,104 +38,122 @@ public class SignUpServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
-		request.setAttribute("errors", new ArrayList<>());
-        RequestDispatcher rd = 
-            request.getRequestDispatcher("sign_up.jsp");
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        session.setAttribute("errors", new ArrayList<>());
+        RequestDispatcher rd = request.getRequestDispatcher("sign_up.jspx");
         rd.forward(request, response);
-	}
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
-        RequestDispatcher rd = 
-            request.getRequestDispatcher("sign_up.jsp");
-		Map<String, String[]> formData = request.getParameterMap();
-		if(validateFormData(formData)) {
-			try {
-				createUserRecord(formData, request);
-				HttpSession session = request.getSession();
-				session.setAttribute("name", formData.get("first-name")[0]);
-		        rd = request.getRequestDispatcher("sign_up_success.jsp");
-		        rd.forward(request, response);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-			
-		} else {
-			List<String> invalidParameters = getInvalidParameters(formData);
-			request.setAttribute("errors", invalidParameters);
-			rd.forward(request, response);
-		}
-	}
-	
-	private boolean validateFormData(Map<String, String[]> formData) {
-		String[] fName = formData.get("first-name");
-		String[] lName = formData.get("surname");
-		String[] email = formData.get("email");
-		String[] password = formData.get("password");
-		if(fName.length == 0 || lName.length == 0 || email.length == 0 || password.length == 0) {
-			return false;
-		}
-		if(fName[0].length() == 0 || lName[0].length() == 0 || email[0].length() == 0 || password[0].length() == 0) {
-			return false;
-		}
-		
-		return true;
-		//TODO: add more form validation
-	}
-	
-	private List<String> getInvalidParameters(Map<String, String[]> formData) {
-		List<String> errors = new ArrayList<>();
-		String[] fName = formData.get("first-name");
-		String[] lName = formData.get("surname");
-		String[] email = formData.get("email");
-		String[] password = formData.get("password");
-		if(fName.length == 0 || fName[0].length() == 0) {
-			errors.add("You must provide your first name");
-		}
-		if(lName.length == 0 || lName[0].length() == 0) {
-			errors.add("You must provide your surname");
-		}
-		if(email.length == 0 || email[0].length() == 0) {
-			errors.add("You must provide your email address");
-		}
-		if(password.length == 0 || password[0].length() == 0) {
-			errors.add("You must provide your password");
-		}
-		return errors;
-	}
-	
-	private boolean createUserRecord(Map<String, String[]> formData, HttpServletRequest request) throws SQLException, ClassNotFoundException, NoSuchAlgorithmException, UnsupportedEncodingException {
-		UserRecord record = UserRecord.createRecord(formData);
-		Connection database = DatabaseConnection.getDatabase();
-		PreparedStatement statement = database.prepareStatement("insert into users(firstName, lastName, email, passwordHash) values (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-		statement.setString(1, record.firstName());
-		statement.setString(2, record.surname());
-		statement.setString(3, record.email());
-		String hashedPassword = DatabaseConnection.hashPassword(record.password());
-		statement.setString(4, hashedPassword);
-		statement.executeUpdate();
-		ResultSet generatedKeys = statement.getGeneratedKeys();
-		if(generatedKeys.next()) {
-			request.getSession().setAttribute("user_id", generatedKeys.getInt(1));
-		}
-		statement.close();
-		database.close();
-		return true;
-	}
-	
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        RequestDispatcher rd = request.getRequestDispatcher("sign_up.jspx");
+        Map<String, String[]> formData = request.getParameterMap();
+        try {
+            if (validateFormData(formData)) {
+                createUserRecord(formData, request);
+                HttpSession session = request.getSession();
+                session.setAttribute("name", formData.get("first-name")[0]);
+                rd = request.getRequestDispatcher("sign_up_success.jsp");
+                rd.forward(request, response);
+            } else {
+                List<String> invalidParameters = getInvalidParameters(formData);
+                HttpSession session = request.getSession();
+                session.setAttribute("errors", invalidParameters);
+                rd.forward(request, response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean validateFormData(Map<String, String[]> formData) throws ClassNotFoundException, SQLException {
+        String[] fName = formData.get("first-name");
+        String[] lName = formData.get("surname");
+        String[] email = formData.get("email");
+        String[] password = formData.get("password");
+        if (fName.length == 0 || lName.length == 0 || email.length == 0 || password.length == 0) {
+            return false;
+        }
+        if (fName[0].length() == 0 || lName[0].length() == 0 || email[0].length() == 0 || password[0].length() == 0) {
+            return false;
+        }
+        Connection database = DatabaseConnection.getDatabase();
+        PreparedStatement statement = database.prepareStatement("select count(id) from users where email = ?");
+        statement.setString(1, email[0]);
+        ResultSet existingEmailQueryResult = statement.executeQuery();
+        existingEmailQueryResult.next();
+        if (existingEmailQueryResult.getInt(1) > 0) {
+            statement.close();
+            database.close();
+            return false;
+        }
+        return true;
+        // TODO: add more form validation
+    }
+
+    private List<String> getInvalidParameters(Map<String, String[]> formData) throws ClassNotFoundException, SQLException {
+        List<String> errors = new ArrayList<>();
+        String[] fName = formData.get("first-name");
+        String[] lName = formData.get("surname");
+        String[] email = formData.get("email");
+        String[] password = formData.get("password");
+        if (fName.length == 0 || fName[0].length() == 0) {
+            errors.add("You must provide your first name");
+        }
+        if (lName.length == 0 || lName[0].length() == 0) {
+            errors.add("You must provide your surname");
+        }
+        if (email.length == 0 || email[0].length() == 0) {
+            errors.add("You must provide your email address");
+        }
+        if (password.length == 0 || password[0].length() == 0) {
+            errors.add("You must provide your password");
+        }
+        Connection database = DatabaseConnection.getDatabase();
+        PreparedStatement statement = database.prepareStatement("select count(id) from users where email = ?");
+        statement.setString(1, email[0]);
+        ResultSet existingEmailQueryResult = statement.executeQuery();
+        existingEmailQueryResult.next();
+        if (existingEmailQueryResult.getInt(1) > 0) {
+            errors.add("This email address is already registered to an account");
+            statement.close();
+            database.close();
+        }
+        return errors;
+    }
+
+    private boolean createUserRecord(Map<String, String[]> formData, HttpServletRequest request)
+            throws SQLException, ClassNotFoundException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        UserRecord record = UserRecord.createRecord(formData);
+        Connection database = DatabaseConnection.getDatabase();
+        PreparedStatement statement = database.prepareStatement(
+                "insert into users(firstName, lastName, email, passwordHash) values (?, ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS);
+        statement.setString(1, record.firstName());
+        statement.setString(2, record.surname());
+        statement.setString(3, record.email());
+        String hashedPassword = DatabaseConnection.hashPassword(record.password());
+        statement.setString(4, hashedPassword);
+        statement.executeUpdate();
+        ResultSet generatedKeys = statement.getGeneratedKeys();
+        if (generatedKeys.next()) {
+            request.getSession().setAttribute("user_id", generatedKeys.getInt(1));
+        }
+        statement.close();
+        database.close();
+        return true;
+    }
 
 }
