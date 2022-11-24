@@ -1,14 +1,13 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="models.Goal"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
-<html lang="en">
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:directive.page language="java"
+       contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" />
+<jsp:element name="html">
+<jsp:body>
 <head>
 	<jsp:include page="partials/header.jspx">
 		<jsp:param name="addScripts" value="true"/>
-	</jsp:include>
-	<script src="update-goal.js"></script>
+	</jsp:include>	
 </head>
 <body id="page-top">
 	<jsp:include page="partials/navbar.jsp"/>
@@ -30,27 +29,21 @@
 						</tr>
 					</thead>
 					<tbody id="goal-table-body">
-						<%
-						ArrayList<Goal> goals = (ArrayList<Goal>) session.getAttribute("goals");
-						for (Goal goal : goals) {
-						%>
-						<tr>
-							<td class="align-middle text-center"
-								id="<%=goal.getGoalName()%>"><%=goal.getGoalName()%></td>
-							<td class="align-middle text-center"
-								id="<%=goal.getGoalName()%>-target"><%=goal.getTarget()%>
-								<%=goal.getGoalUnit()%></td>
-							<td class="align-middle text-center"><button
-									id="add-goal-btn" type="button"
-									class="btn btn-secondary text-white rounded mr-auto ml-auto"
-									data-bs-toggle="modal" data-bs-target="#addGoalModal"
-									onclick="addFormToDialog('<%=goal.getGoalName()%>', '<%=goal.getGoalUnit()%>')"
-									aria-label="Update goal for <%=goal.getGoalName()%>">Update
-									goal</button></td>
-						</tr>
-						<%
-						}
-						%>
+						<c:forEach var="goal" items="${sessionScope.goals}">	
+							<tr>
+								<td class="align-middle text-center"
+									id="${goal.goalName}">${goal.goalName}</td>
+								<td class="align-middle text-center"
+									id="${goal.goalName}-target">${goal.target} ${goal.goalUnit}</td>
+								<td class="align-middle text-center"><button
+										id="add-goal-btn" type="button"
+										class="btn btn-secondary text-white rounded mr-auto ml-auto"
+										data-bs-toggle="modal" data-bs-target="#addGoalModal"
+										onclick="addFormToDialog('${goal.goalName}', '${goal.goalUnit}')"
+										aria-label="Update goal for ${goal.goalName}">Update
+										goal</button></td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>
@@ -66,7 +59,7 @@
 							<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close"></button>
 						</div>
-						<div class="modal-body" id="modal-body"></div>
+						<div class="modal-body" id="modal-body"><!--  some content --></div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
 								data-bs-dismiss="modal">Close</button>
@@ -84,9 +77,12 @@
 			</form>
 		</div>
 	</section>
+	<script src="update-goal.js"><!-- some content --></script>
 	<jsp:include page="partials/footer.jspx">
 		<jsp:param name="ignoreScripts" value="true"/>
 	</jsp:include>
 
 </body>
-</html>
+</jsp:body>
+</jsp:element>
+</jsp:root>

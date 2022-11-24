@@ -33,7 +33,7 @@ public class DashboardServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		response.setContentType("text/html;charset=UTF-8");
         RequestDispatcher rd = 
-            request.getRequestDispatcher("dashboard.jsp");
+            request.getRequestDispatcher("dashboard.jspx");
 		if(session.getAttribute("goals") != null) {
 			rd.forward(request, response);
 		} else {

@@ -39,7 +39,7 @@ public class UpdateGoalsServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher rd = request.getRequestDispatcher("update_goals.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("update_goals.jspx");
         rd.forward(request, response);
 	}
 
@@ -67,7 +67,7 @@ public class UpdateGoalsServlet extends HttpServlet {
 				enteredGoals.add(goal);
 				PreparedStatement statement = database.prepareStatement("update user_goals set target = ? WHERE userId = ? AND goalName = ?");
 				statement.setInt(1, goal.getTarget());
-				statement.setInt(2, (Integer.valueOf((String) session.getAttribute("user_id"))));
+				statement.setInt(2, (Integer) session.getAttribute("user_id"));
 				statement.setString(3, goal.getGoalName());
 				statement.execute();
 				statement.close();

@@ -43,7 +43,7 @@ public class SignInServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("errors", new ArrayList<>());
         RequestDispatcher rd = 
-                request.getRequestDispatcher("sign_in.jsp");
+                request.getRequestDispatcher("sign_in.jspx");
         rd.forward(request, response);
 	}
 
@@ -55,10 +55,10 @@ public class SignInServlet extends HttpServlet {
 		request.getRequestDispatcher("sign_in.jsp");
 		Map<String, String[]> formData = request.getParameterMap();
 		if(validateFormData(formData)) {
-			String optUserId;
+			Integer optUserId;
 			try {
 				optUserId = validateSignIn(formData.get("email")[0], formData.get("password")[0]);
-				if(!optUserId.isEmpty()) {
+				if(optUserId != null) {
 					String userName = getUserName(optUserId);
 					HttpSession session = request.getSession();
 					session.setAttribute("name", userName);
@@ -71,18 +71,6 @@ public class SignInServlet extends HttpServlet {
 					request.setAttribute("errors", errors);
 					rd.forward(request, response);
 				}
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -121,20 +109,20 @@ public class SignInServlet extends HttpServlet {
 		return errors;
 	}
 
-	private String validateSignIn(String email, String password) throws ClassNotFoundException, SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	private Integer validateSignIn(String email, String password) throws ClassNotFoundException, SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		Connection database = DatabaseConnection.getDatabase();
 		PreparedStatement statement = database.prepareStatement("select id, passwordHash from users where email = ?");
 		statement.setString(1, email);
 		ResultSet rs = statement.executeQuery();
 		try {
 			if(!rs.next()) {
-				return ""; 
+				return null; 
 			} else {
 				String hashedPassword = DatabaseConnection.hashPassword(password);
 				if(rs.getString("passwordHash").equals(hashedPassword)) {
-					return rs.getString("id");
+					return rs.getInt("id");
 				} else {
-					return "";
+					return null;
 				}
 			}
 		} finally {
@@ -143,10 +131,10 @@ public class SignInServlet extends HttpServlet {
 		}
 	}
 
-	private String getUserName(String userId) throws Exception {
+	private String getUserName(Integer userId) throws Exception {
 		Connection database = DatabaseConnection.getDatabase();
 		PreparedStatement statement = database.prepareStatement("select firstName from users where id = ?");
-		statement.setString(1, userId);
+		statement.setInt(1, userId);
 		ResultSet rs = statement.executeQuery();
 		try {
 			if(!rs.next()) {
@@ -160,20 +148,18 @@ public class SignInServlet extends HttpServlet {
 		}
 	}
 
-	private List<Goal> getUserGoals(String userId) throws Exception {
-		//TODO: need to query DB for user goals
+	private List<Goal> getUserGoals(Integer userId) throws Exception {
 		List<Goal> goals = new ArrayList<>();
 		Connection database;
 		PreparedStatement statement;
 		database = DatabaseConnection.getDatabase();
 		statement = database.prepareStatement("select * from user_goals where userId = ?");
-		statement.setString(1, userId);
+		statement.setInt(1, userId);
 		ResultSet rs = statement.executeQuery();
 		while(rs.next()) {
 			Goal goal = new Goal(rs.getString("goalName"), rs.getString("goalUnit"), rs.getInt("currentProgress"), rs.getInt("target"));
 			goals.add(goal);
 		}
-		Goal caloriesRecord = new Goal("Calories", "kcals", 1800, 2000);
 		return goals;
 	}
 

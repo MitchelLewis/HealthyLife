@@ -39,7 +39,7 @@ public class UpdateProgressServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher rd = request.getRequestDispatcher("update_progress.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("update_progress.jspx");
         rd.forward(request, response);
 	}
 
@@ -68,7 +68,7 @@ public class UpdateProgressServlet extends HttpServlet {
 					Goal updatedGoal = new Goal(goal.getGoalName(), goal.getGoalUnit(), updatedProgress, goal.getTarget());
 					PreparedStatement statement = database.prepareStatement("update user_goals set currentProgress = ? WHERE userId = ? AND goalName = ?");
 					statement.setInt(1, updatedProgress);
-					statement.setInt(2, (Integer.valueOf((String) session.getAttribute("user_id"))));
+					statement.setInt(2, (Integer) session.getAttribute("user_id"));
 					statement.setString(3, goal.getGoalName());
 					statement.execute();
 					statement.close();
