@@ -23,6 +23,7 @@ public class DatabaseConnection {
         return con;
 	}
 	
+	//TODO: add source
 	public static String hashPassword(String plainTextPassword) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(plainTextPassword.getBytes("utf8"));

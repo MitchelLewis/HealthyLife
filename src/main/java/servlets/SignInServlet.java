@@ -34,6 +34,7 @@ public class SignInServlet extends HttpServlet {
      */
     public SignInServlet() {
         super();
+        
         // TODO Auto-generated constructor stub
     }
 
@@ -41,7 +42,8 @@ public class SignInServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("errors", new ArrayList<>());
+        HttpSession session = request.getSession();
+        session.setAttribute("errors", new ArrayList<>());
         RequestDispatcher rd = 
                 request.getRequestDispatcher("sign_in.jspx");
         rd.forward(request, response);
