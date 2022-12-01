@@ -62,9 +62,7 @@ public class AddGoalsServlet extends HttpServlet {
 		List<Goal> enteredGoals = new ArrayList<>();
 		for(String goal: allGoals.keySet()) {
 			try {
-				String[] goalValueAsArray = formData.get(goal);
 				String[] targetAsArray = formData.get(goal + ".target");
-				String goalValue = goalValueAsArray[0];
 				int target = Integer.valueOf(targetAsArray[0]);
 				Goal goalRecord = new Goal(goal, allGoals.get(goal), 0, target);
 				PreparedStatement statement = database.prepareStatement("insert into user_goals(goalName, goalUnit, currentProgress, target, userId) values (?, ?, ?, ?, ?)");
