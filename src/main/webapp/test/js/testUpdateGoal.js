@@ -5,7 +5,7 @@ var vm = require('vm');
 var expect = require('chai')
     .expect;
 $ = require('jquery');
-var code = fs.readFileSync('../../update-progress.js');
+var code = fs.readFileSync('../../update-goal.js');
 //Run the add-goal JS file in the VM
 vm.runInThisContext(code);
 describe('Update Goal', function() {
@@ -93,7 +93,6 @@ describe('Update Goal', function() {
 		expect(doc.getElementById('Sugar').innerHTML).to.equal('Sugar');
 		expect(doc.getElementById('Sugar-target').innerHTML).to.equal('1 grams');
 		deleteGoal('Sugar');
-		console.log(doc.body.innerHTML);
 		expect(!!doc.getElementById('goal-input-1')).to.be.false;
 		expect(!!doc.getElementById('goal-input-1.target')).to.be.false;
 		expect(!!doc.getElementById('Sugar')).to.be.false;
