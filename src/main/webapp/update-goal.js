@@ -61,7 +61,6 @@ function addGoalToForm(goalName, target, goalId) {
 }
 
 function deleteGoal(goalName) {
-	console.log('running here');
     $.ajax({
         type: "DELETE",
         url: `update-goals?goalName=${goalName}`, //not really RESTful - ideally the endpoint should be named /goals so DELETE /goals is better
@@ -77,7 +76,6 @@ function deleteGoal(goalName) {
 
 
 function processResponse(goalName) {
- 	console.log('running here v2');
   	document.getElementById(`${goalName}.row`).remove();
   	const goalInForm = document.querySelector(`[name="${goalName}"]`);
   	if(goalInForm) {
