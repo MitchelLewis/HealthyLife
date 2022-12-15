@@ -54,7 +54,8 @@ public class SignInServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = 
-		request.getRequestDispatcher("sign_in.jsp");
+		request.getRequestDispatcher("sign_in.jspx");
+        HttpSession session = request.getSession();
 		Map<String, String[]> formData = request.getParameterMap();
 		if(validateFormData(formData)) {
 			Integer optUserId;
@@ -62,7 +63,6 @@ public class SignInServlet extends HttpServlet {
 				optUserId = validateSignIn(formData.get("email")[0], formData.get("password")[0]);
 				if(optUserId != null) {
 					String userName = getUserName(optUserId);
-					HttpSession session = request.getSession();
 					session.setAttribute("name", userName);
 					session.setAttribute("user_id", optUserId);
 					session.setAttribute("goals", getUserGoals(optUserId));
@@ -70,7 +70,7 @@ public class SignInServlet extends HttpServlet {
 				} else {
 					List<String> errors = new ArrayList<>();
 					errors.add("Your email/password is incorrect");
-					request.setAttribute("errors", errors);
+					session.setAttribute("errors", errors);
 					rd.forward(request, response);
 				}
 			} catch (Exception e) {
@@ -79,7 +79,7 @@ public class SignInServlet extends HttpServlet {
 			}
 		} else {
 			List<String> invalidParameters = getInvalidParameters(formData);
-			request.setAttribute("errors", invalidParameters);
+			session.setAttribute("errors", invalidParameters);
 			rd.forward(request, response);
 		}
 	}

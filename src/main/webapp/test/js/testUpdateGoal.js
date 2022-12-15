@@ -4,12 +4,14 @@ var fs = require('fs');
 var vm = require('vm');
 var expect = require('chai')
     .expect;
+$ = require('jquery');
 var code = fs.readFileSync('../../update-progress.js');
 //Run the add-goal JS file in the VM
 vm.runInThisContext(code);
 describe('Update Goal', function() {
 	//Create a new DOM and set the necessary global elements
 	const dom = new jsdom.JSDOM(`<!DOCTYPE html><body></body>`);
+
 	doc = dom.window.document;
 	global.window = dom.window;
 	global.document = dom.window.document;
@@ -21,7 +23,6 @@ describe('Update Goal', function() {
 		}
 		const testParent = doc.createElement('div');
 		testParent.id = 'test-container';
-		
 		testParent.innerHTML = `<form id="goal-entry-form">
 					<div class="container">
 						<div class="form-group row">
@@ -68,7 +69,7 @@ describe('Update Goal', function() {
 					</thead>
 					<tbody id="goal-table-body">
 					
-						<tr>
+						<tr id="Sugar.row">
 							<td class="align-middle text-center" id="Sugar">Sugar</td>
 							<td class="align-middle text-center" id="Sugar-target">2 grams</td>
 							<td class="align-middle text-center"></td>
@@ -78,7 +79,26 @@ describe('Update Goal', function() {
 			`;
 		doc.body.appendChild(testParent);
 	});
-
+	
+	it('should remove the goal from the page and the associated form elements', function () {
+		 $.ajax = function(params){
+		       params.success('');
+		   };
+		counter = 1;
+		window.HTMLFormElement.prototype.submit = () => {}
+		doc.getElementById('goal-amount').value = '1';
+		updateGoal(new Event('submit'), 'Sugar', 'grams');
+		expect(doc.getElementById('goal-input-1').value).to.equal('Sugar');
+		expect(doc.getElementById('goal-input-1.target').value).to.equal('1');
+		expect(doc.getElementById('Sugar').innerHTML).to.equal('Sugar');
+		expect(doc.getElementById('Sugar-target').innerHTML).to.equal('1 grams');
+		deleteGoal('Sugar');
+		console.log(doc.body.innerHTML);
+		expect(!!doc.getElementById('goal-input-1')).to.be.false;
+		expect(!!doc.getElementById('goal-input-1.target')).to.be.false;
+		expect(!!doc.getElementById('Sugar')).to.be.false;
+		expect(!!doc.getElementById('Sugar-target')).to.be.false;
+	});
 
 	it('should add a hidden input field to the page and update the page value', function () {
 		counter = 1;
@@ -109,4 +129,5 @@ describe('Update Goal', function() {
 		expect(doc.getElementById('Sugar').innerHTML).to.equal('Sugar');
 		expect(doc.getElementById('Sugar-target').innerHTML).to.equal('3 grams');
 	});
+
 });
