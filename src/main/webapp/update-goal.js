@@ -59,3 +59,30 @@ function addGoalToForm(goalName, target, goalId) {
 	document.getElementById('goal-info-form').appendChild(inputElementForGoalName);
 	document.getElementById('goal-info-form').appendChild(inputElementForGoalTarget);
 }
+
+function deleteGoal(goalName) {
+	console.log('running here');
+    $.ajax({
+        type: "DELETE",
+        url: `update-goals?goalName=${goalName}`, //not really RESTful - ideally the endpoint should be named /goals so DELETE /goals is better
+        dataType: "text",
+        success: function(){
+            processResponse(goalName);
+        },
+        error: function (err) {
+			console.log("Failed to make AJAX call with error: " + JSON.stringify(err));
+		}
+    });
+}
+
+
+function processResponse(goalName) {
+ 	console.log('running here v2');
+  	document.getElementById(`${goalName}.row`).remove();
+  	const goalInForm = document.querySelector(`[name="${goalName}"]`);
+  	if(goalInForm) {
+		goalInForm.remove();
+		document.querySelector(`[name="${goalName}.target"]`).remove();
+  	}  
+}
+   
