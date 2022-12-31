@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 
 import database.DatabaseConnection;
 import models.Goal;
+import models.UserData;
 
 /**
  * Servlet implementation class SignInServlet
@@ -43,7 +44,12 @@ public class SignInServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        session.setAttribute("errors", new ArrayList<>());
+        UserData userData = (UserData) session.getAttribute("userData");
+        if(userData == null) {
+            userData = new UserData();
+        }
+        userData.setErrors(new ArrayList<>());
+        session.setAttribute("userData", userData);
         RequestDispatcher rd = 
                 request.getRequestDispatcher("sign_in.jspx");
         rd.forward(request, response);
@@ -57,20 +63,23 @@ public class SignInServlet extends HttpServlet {
 		request.getRequestDispatcher("sign_in.jspx");
         HttpSession session = request.getSession();
 		Map<String, String[]> formData = request.getParameterMap();
+        UserData userData = (UserData) session.getAttribute("userData");
 		if(validateFormData(formData)) {
 			Integer optUserId;
 			try {
 				optUserId = validateSignIn(formData.get("email")[0], formData.get("password")[0]);
 				if(optUserId != null) {
 					String userName = getUserName(optUserId);
-					session.setAttribute("name", userName);
+					userData.setUserName(userName);
+					session.setAttribute("userData", userData);
 					session.setAttribute("user_id", optUserId);
 					session.setAttribute("goals", getUserGoals(optUserId));
 					response.sendRedirect("dashboard");
 				} else {
 					List<String> errors = new ArrayList<>();
 					errors.add("Your email/password is incorrect");
-					session.setAttribute("errors", errors);
+					userData.setErrors(errors);
+					session.setAttribute("userData", userData);
 					rd.forward(request, response);
 				}
 			} catch (Exception e) {
@@ -79,7 +88,8 @@ public class SignInServlet extends HttpServlet {
 			}
 		} else {
 			List<String> invalidParameters = getInvalidParameters(formData);
-			session.setAttribute("errors", invalidParameters);
+            userData.setErrors(invalidParameters);
+            session.setAttribute("userData", userData);
 			rd.forward(request, response);
 		}
 	}

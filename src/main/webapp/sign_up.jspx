@@ -25,12 +25,14 @@
 			<jsp:include page="partials/divider.jspx">
 				<jsp:param name="isDarkDivider" value="true"/>
 			</jsp:include>
+			<jsp:useBean id="userData" type="models.UserData" scope="session"/>
+			
 			<div class="row">
 				<div class="col-lg-8 mr-auto ml-auto" id="input-col">
-					<c:if test="${not empty sessionScope.errors}">
+					<c:if test="${not empty userData.errors}">
 						<div class="alert alert-danger" role="alert">
 							<ul>
-								<c:forEach var="error" items="${sessionScope.errors}">
+								<c:forEach var="error" items="${userData.errors}">
 									<li><c:out value="${error}"></c:out></li>
 								</c:forEach>
 							</ul>
