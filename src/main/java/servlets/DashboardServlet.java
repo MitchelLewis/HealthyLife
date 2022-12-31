@@ -37,7 +37,7 @@ public class DashboardServlet extends HttpServlet {
 		if(session.getAttribute("goals") != null) {
 			rd.forward(request, response);
 		} else {
-		    session.removeAttribute("name");
+		    session.removeAttribute("userData");
 	        session.removeAttribute("user_id");
 	        session.removeAttribute("goals");
 			response.sendRedirect("sign-in");

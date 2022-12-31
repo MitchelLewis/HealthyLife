@@ -37,7 +37,7 @@ public class SignOutServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		session.removeAttribute("name");
+		session.removeAttribute("userData");
 		session.removeAttribute("user_id");
 		session.removeAttribute("goals");
 		response.setContentType("text/html;charset=UTF-8");

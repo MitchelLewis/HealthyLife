@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import database.DatabaseConnection;
+import models.UserData;
 import models.UserRecord;
 
 /**
@@ -46,7 +47,12 @@ public class SignUpServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8"); 
         HttpSession session = request.getSession();
-        session.setAttribute("errors", new ArrayList<>());
+        UserData userData = (UserData) session.getAttribute("userData");
+        if(userData == null) {
+            userData = new UserData();
+        }
+        userData.setErrors(new ArrayList<>());
+        session.setAttribute("userData", userData);
         RequestDispatcher rd = request.getRequestDispatcher("sign_up.jspx");
         rd.forward(request, response);
     }
@@ -60,17 +66,19 @@ public class SignUpServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         RequestDispatcher rd = request.getRequestDispatcher("sign_up.jspx");
         Map<String, String[]> formData = request.getParameterMap();
+        HttpSession session = request.getSession();
+        UserData userData = (UserData) session.getAttribute("userData");
         try {
             if (validateFormData(formData)) {
                 createUserRecord(formData, request);
-                HttpSession session = request.getSession();
-                session.setAttribute("name", formData.get("first-name")[0]);
+                userData.setUserName(formData.get("first-name")[0]);
+                session.setAttribute("userData", userData);
                 rd = request.getRequestDispatcher("sign_up_success.jsp");
                 rd.forward(request, response);
             } else {
                 List<String> invalidParameters = getInvalidParameters(formData);
-                HttpSession session = request.getSession();
-                session.setAttribute("errors", invalidParameters);
+                userData.setErrors(invalidParameters);
+                session.setAttribute("userData", userData);
                 rd.forward(request, response);
             }
         } catch (Exception e) {
